@@ -79,10 +79,10 @@ def initView(view, textActivityUsers, textHistory, textMessage):
     frame.grid_propagate(False)
     frame.pack(expand=1)
 
-    labelTitle = Label(frame, text="Este es el servidor que me tiene estresado, bienvenido", fg="Blue", font=("Aero", 20), anchor="w")
+    labelTitle = Label(frame, text="Servidor de sockets, bienvenido", fg="Blue", font=("Aero", 20), anchor="w")
     labelTitle.place(relx=0.0, rely=0.0)
 
-    labelIntroduceMessage = Label(frame, text="Ingrese un mensaje aqui abajito, no sea rata", fg="Blue",
+    labelIntroduceMessage = Label(frame, text="Ingrese un mensaje", fg="Blue",
                        font=("Aero", 15), anchor="w", pady=20)
     labelIntroduceMessage.place(relx=0.0, rely=0.1)
 

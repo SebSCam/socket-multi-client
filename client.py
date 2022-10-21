@@ -7,11 +7,13 @@ port = 5101
 #tag = ""
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #----------------Interfaz-----------------
+
 view = Tk()
-textTag = StringVar()
-mainView = Tk
-textMessage = StringVar()
 textHistory = StringVar()
+#textHistory = StringVar()
+#textHistory.set("Historial")
+textTag = StringVar()
+
 #------------------------------------------
 
 def initMainView():
@@ -24,33 +26,35 @@ def initMainView():
     frame.grid_propagate(False)
     frame.pack(expand=1)
 
-    labelTitle = Label(frame, text="Cliente de mensajeria por sockets ¯\_(o_O)_/¯", fg="Blue",
+    labelTitle = Label(frame, text="Cliente de mensajeria por sockets", fg="Blue",
                        font=("Aero", 20), anchor="w")
     labelTitle.place(relx=0.0, rely=0.0)
-    labelIntroduceMessage = Label(frame, text="Ingrese un mensaje aqui abajito, no sea rata", fg="Blue",
+    labelIntroduceMessage = Label(frame, text="Ingrese un mensaje", fg="Blue",
                        font=("Aero", 15), anchor="w", pady=20)
     labelIntroduceMessage.place(relx=0.0, rely=0.1)
+    textMessage = StringVar()
     textFieldMessage = Entry(frame, textvariable=textMessage, font=("Aero", 15))
     textFieldMessage.place(relx=0.0, rely=0.25, relheight=0.1, relwidth=0.7)
 
     buttonSend = Button(frame, text="Enviar", bg="green", fg="white", font=("Aero", 15),
-                        command=lambda: print("ah bueno pa saber"))
+                        command=lambda: write_messages(textMessage.get()))
     buttonSend.place(relx=0.8, rely=0.25, relheight=0.1, relwidth=0.1)
-    labelHistory = Label(frame, text="Mensajes provenientes (o que le ponemos? como historial de mensajes?) mejor el escudo de millos: ))°°//M((", fg="Blue",
+    labelHistory = Label(frame, text="Historial de mensajes", fg="Blue",
                        font=("Aero", 14), anchor="w")
     labelHistory.place(relx=0.0, rely=0.4, relwidth=1)
+    textHistory.set("Historial")
     textFieldHistory = Label(frame, textvariable=textHistory, font=("Aero", 15), bg="white", anchor="nw",
                              justify="left")
     textFieldHistory.place(relx=0.0, rely=0.5, relheight=0.5, relwidth=1)
-
+    mainView.mainloop()
 def startConection(tag):
 
     client.connect((host, port))
     receive_thread = threading.Thread(target=receive_messages, args=(tag,))
     receive_thread.start()
 
-    write_thread = threading.Thread(target=write_messages)
-    write_thread.start()
+    #write_thread = threading.Thread(target=write_messages)
+    #write_thread.start()
     initMainView()
 
 def receive_messages(tag):
@@ -59,19 +63,17 @@ def receive_messages(tag):
         if message == "@id":
             client.send(tag.encode("utf-8"))
         else:
+            #textHistory.set("porty")
             print(f"server says: {message}")
 
-def write_messages():
-    message = ""
-    while message.lower().strip() != 'bye':
-        message = input('')
+def write_messages(message):
+    if message.lower().strip() != 'bye':
         client.send(message.encode('utf-8'))
-
-    client.close()
-    print("Client Disconnected")
+    else:
+        client.close()
+        print("Client Disconnected")
 
 def setTag(tagIn):
-    #tag = tagIn
     view.destroy()
     startConection(tagIn)
 
@@ -104,13 +106,3 @@ def initView(view, textTag):
     view.mainloop()
 
 initView(view, textTag)
-
-"""
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect((host, port))
-receive_thread = threading.Thread(target=receive_messages)
-receive_thread.start()
-
-write_thread = threading.Thread(target=write_messages)
-write_thread.start()
-"""
