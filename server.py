@@ -6,7 +6,7 @@ import os
 import re
 
 host = '127.0.0.1'
-port = 5101
+port = 5102
 
 #------------------------
 view = Tk()
