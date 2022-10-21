@@ -105,9 +105,6 @@ def initView(view, textActivityUsers, textHistory, textMessage):
     textFieldHistory.place(relx=0.0, rely=0.4, relheight=0.55, relwidth=0.6)
     view.mainloop()
 
-def wenasTardes(message):
-    print(message)
-
 threadConections = threading.Thread(target=receive_connections)
 threadConections.start()
 initView(view, textActivityUsers, textHistory, textMessage)
